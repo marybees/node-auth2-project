@@ -44,7 +44,9 @@ router.post("/login", (req, res) => {
         if (user && bcryptjs.compareSync(password, user.password)) {
           const token = getJwt(user);
 
-          res.status(200).json({ message: "Welcome to our API", token });
+          res
+            .status(200)
+            .json({ message: "Welcome to the best API ever!", token });
         } else {
           res.status(401).json({ message: "Invalid credentials" });
         }
@@ -66,10 +68,8 @@ function getJwt(user) {
     role: user.role,
   };
 
-  const jwtSecret = "is it secret? is it safe?";
-
   const jwtOptions = {
-    expiresIn: "8h",
+    expiresIn: "24h",
   };
 
   return jwt.sign(payload, config.jwtSecret, jwtOptions);

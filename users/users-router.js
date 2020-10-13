@@ -3,7 +3,7 @@ const router = require("express").Router();
 const Users = require("./users-model.js");
 const restricted = require("../auth/restricted-middleware.js");
 
-router.get("/", restricted, checkRole("admin"), (req, res) => {
+router.get("/", restricted, checkRole("human resources"), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(200).json(users);
@@ -11,9 +11,9 @@ router.get("/", restricted, checkRole("admin"), (req, res) => {
     .catch((err) => res.send(err));
 });
 
-function checkRole(role) {
+function checkRole(department) {
   return function (req, res, next) {
-    if (req.jwt.role === role) {
+    if (req.jwt.department === department) {
       next();
     } else {
       res.status(403).json({ message: "you have no access" });
